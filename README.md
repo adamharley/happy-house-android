@@ -1,2 +1,2 @@
-happy-house-android
+Happy House for Android
 ===================
