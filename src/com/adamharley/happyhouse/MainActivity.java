@@ -33,8 +33,6 @@ public class MainActivity extends Activity {
 	private Handler ticker = new Handler();
 	private static int msecsPerFrame = 200;
 	private float volume = 1;
-	
-	
 	private Runnable tick = new Runnable() {
 
 		@Override
@@ -53,8 +51,6 @@ public class MainActivity extends Activity {
 		}
 		
 	};
-	
-	
 	private Runnable soundTimeout = new Runnable() {
 
 		@Override
@@ -250,13 +246,11 @@ public class MainActivity extends Activity {
     			
     			ImageView iv = (ImageView) stage.findViewWithTag("channel"+channel);
 				iv.setImageResource(android.R.color.transparent);
-				iv.invalidate();
     			iv.setClickable(false);
     			
             	if( imageResID.equals(0) ) {
             		switch (Integer.parseInt(imageName)) { // Convert to integer to work around for being below JRE 1.7
 	    				case 288: // Quit button
-	    					iv.setImageResource(android.R.color.transparent);
 	    					int width = 52 * 2;
 	    					int height = 22 * 2;
 	    					
@@ -265,7 +259,6 @@ public class MainActivity extends Activity {
 	    	    			params.topMargin = sprite.getInt(2) * 2;
 	    	    			
 	    	    			iv.setLayoutParams(params);
-	    	    			iv.invalidate();
 	    	    			iv.setVisibility(View.VISIBLE);
 	    	    			
 	    	    			iv.setClickable(true);
@@ -279,7 +272,6 @@ public class MainActivity extends Activity {
 	    				case 289: // Basket button? (found in start0, end1 and hello2)
 	    					break;
 	    				case 290: // Open button
-	    					iv.setImageResource(android.R.color.transparent);
 	    					width = 52 * 2;
 	    					height = 22 * 2;
 	    					
@@ -288,7 +280,6 @@ public class MainActivity extends Activity {
 	    	    			params.topMargin = sprite.getInt(2) * 2;
 	    	    			
 	    	    			iv.setLayoutParams(params);
-	    	    			iv.invalidate();
 	    	    			iv.setVisibility(View.VISIBLE);
 	    	    			
 	    	    			iv.setClickable(true);
@@ -386,7 +377,6 @@ public class MainActivity extends Activity {
 	    			params.topMargin = sprite.getInt(2) * 2;
 	    			
 	    			iv.setLayoutParams(params);
-	    			iv.invalidate();
 	    			iv.setVisibility(View.VISIBLE);
 				}
             }
@@ -464,11 +454,9 @@ public class MainActivity extends Activity {
 				loadScene("start0");
 				break;
 			case 151: // end2A
-//				loadScene("end2A");
-				loadScene("mmd.logo");
+				loadScene("end2A");
 				break;
 			case 155: // mmd.logo
-				ticker.removeCallbacks(tick); // Quit
 				break;
 			case 161: // st_dmy
 				break;
