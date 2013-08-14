@@ -9,15 +9,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
-import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -26,13 +28,13 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	
+	private static boolean debug = false;
 	private static final String TAG = "HappyHouse";
 	private JSONObject data;
 	private Integer currentFrame;
 	private MediaPlayer mediaPlayer;
 	private Handler ticker = new Handler();
 	private static int msecsPerFrame = 200;
-	private float volume = 1;
 	private Runnable tick = new Runnable() {
 
 		@Override
@@ -70,6 +72,8 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
         
         if( loadData() ) {
         	loadScene("start0");
@@ -118,19 +122,20 @@ public class MainActivity extends Activity {
         return true;
     }
     
-/*    
+    
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
-        // Checks the orientation of the screen
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-            Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_about:
+                Intent intent = new Intent(this, AboutActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
-*/    
+    
     
     private int getRand(int n) {
     	Random r = new Random();
@@ -184,8 +189,7 @@ public class MainActivity extends Activity {
 	    		} else {
 		    	    mediaPlayer = new MediaPlayer();
 	    		}
-
-	    	    mediaPlayer.setVolume(volume, volume);
+	    		
 	    	    mediaPlayer.setDataSource(descriptor.getFileDescriptor(), start, end);
 	    	    descriptor.close();
 	    	    mediaPlayer.prepare();
@@ -399,7 +403,10 @@ public class MainActivity extends Activity {
     	try {
     		currentFrame = data.getJSONObject("scenes").getInt(n);
     		Log.i(TAG, "Scene "+n+": Loaded");
-            Toast.makeText(this, n, Toast.LENGTH_SHORT).show();
+    		
+    		if (debug) {
+    			Toast.makeText(this, n, Toast.LENGTH_SHORT).show();
+    		}
 
 			ticker.postDelayed(tick, msecsPerFrame);
 			loadImageFrame(currentFrame);
