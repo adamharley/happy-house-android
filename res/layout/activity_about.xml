@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/about_layout"
     android:layout_width="match_parent"
@@ -28,6 +27,7 @@
             android:id="@+id/about_angel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:filter="false"
             android:src="@drawable/member_293" />
 
         <TextView
@@ -50,6 +50,7 @@
             android:id="@+id/about_star"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:filter="false"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
             android:fontFamily="serif"

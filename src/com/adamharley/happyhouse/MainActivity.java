@@ -16,6 +16,9 @@ import android.os.Handler;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.Menu;
@@ -220,7 +223,7 @@ public class MainActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-  }
+	}
     
     
     private void loadImageFrame(int n) {
@@ -370,11 +373,13 @@ public class MainActivity extends Activity {
     	    				break;
 	    			}
 	    			
-	    			Drawable d = getResources().getDrawable(imageResID);
-	    			int width = d.getIntrinsicWidth();
-	    			int height = d.getIntrinsicHeight();
+	    			Bitmap bm = BitmapFactory.decodeResource(getResources(), imageResID);
+	    			BitmapDrawable bd = new BitmapDrawable(getResources(), bm);
+	    			bd.setFilterBitmap(false);
+	    			int width = bd.getIntrinsicWidth();
+	    			int height = bd.getIntrinsicHeight();
 	    			
-	    			iv.setImageDrawable(d);
+	    			iv.setImageDrawable(bd);
 	    			
 	    			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height);
 	    			params.leftMargin = sprite.getInt(1) * 2;
