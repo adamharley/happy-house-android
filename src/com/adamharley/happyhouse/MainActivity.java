@@ -154,7 +154,7 @@ public class MainActivity extends Activity {
     private boolean loadData() {
     	try
     	{
-    		InputStream is = this.getResources().openRawResource(R.raw.data);
+    		InputStream is = getResources().openRawResource(R.raw.data);
     		byte [] buffer = new byte[is.available()];
     		while (is.read(buffer) != -1);
     		String jsontext = new String(buffer);
@@ -183,7 +183,7 @@ public class MainActivity extends Activity {
 	    		
 	    		String soundFile = "sounds/" + sound.replace("-", "_") + ".wav";
 	    		
-	    	    AssetFileDescriptor descriptor = this.getAssets().openFd(soundFile);
+	    	    AssetFileDescriptor descriptor = getAssets().openFd(soundFile);
 	    	    long start = descriptor.getStartOffset();
 	    	    long end = descriptor.getLength();
 
