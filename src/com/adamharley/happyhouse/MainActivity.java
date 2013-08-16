@@ -57,7 +57,7 @@ public class MainActivity extends Activity {
 		
 	};
 	private Runnable soundTimeout = new Runnable() {
-
+		
 		@Override
 		public void run() {
 			ticker.removeCallbacks(this);
@@ -69,6 +69,29 @@ public class MainActivity extends Activity {
 		}
 		
 	};
+	private class TurnAnimRunnable implements Runnable {
+		private int n;
+		private String channel;
+		private JSONArray sprite;
+		private int image;
+		
+		private TurnAnimRunnable(int _n, String _channel, JSONArray _sprite, int _image) {
+			this.n = _n;
+			this.channel = _channel;
+			this.sprite = _sprite;
+			this.image = _image;
+		}
+
+		public void run() {
+			try {
+				sprite.put(0, image);
+				loadImage(n, channel, sprite);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	
     @Override
@@ -259,7 +282,7 @@ public class MainActivity extends Activity {
     }
     
     
-	private void loadImage(int n, String channel, JSONArray sprite) throws JSONException {
+	private void loadImage(final int n, final String channel, final JSONArray sprite) throws JSONException {
     	
     	String imageName = sprite.getString(0);
 		Integer imageResID = getResources().getIdentifier("member_"+imageName, "drawable", getPackageName());
@@ -371,6 +394,97 @@ public class MainActivity extends Activity {
     					}
 	    			});
     				break;
+				case 46: // Walking left hamster
+				case 47:
+				case 48:
+				case 49:
+	    			iv.setClickable(true);
+	    			iv.setOnClickListener(new OnClickListener(){
+	    		        @Override
+	    		        public void onClick(View v) {
+	    					ticker.removeCallbacks(tick);
+	    					ticker.removeCallbacks(soundTimeout);
+	    					
+	    		        	int[] sequence = {1,2,3,4,3,4,3,5};
+	    		        	
+	    		        	for(int i = 0; i < sequence.length; i++) {
+		    		        	TurnAnimRunnable obj = new TurnAnimRunnable(n, channel, sprite, sequence[i]);
+		    		        	ticker.postDelayed(obj, 200 * (i + 1));
+	    		        	}
+	    		        	
+	    		        	ticker.postDelayed(tick, 200 * (sequence.length + 1));
+	    		        }
+	    			});
+					break;
+				case 61: // Walking right hamster
+				case 62:
+				case 63:
+				case 64:
+	    			iv.setClickable(true);
+	    			iv.setOnClickListener(new OnClickListener(){
+	    		        @Override
+	    		        public void onClick(View v) {
+	    					ticker.removeCallbacks(tick);
+	    					ticker.removeCallbacks(soundTimeout);
+	    					
+	    		        	int[] sequence = {6,7,8,9,8,9,8,10};
+	    		        	
+	    		        	for(int i = 0; i < sequence.length; i++) {
+		    		        	TurnAnimRunnable obj = new TurnAnimRunnable(n, channel, sprite, sequence[i]);
+		    		        	ticker.postDelayed(obj, 200 * (i + 1));
+	    		        	}
+	    		        	
+	    		        	ticker.postDelayed(tick, 200 * (sequence.length + 1));
+	    		        }
+	    			});
+					break;
+				case 77: // SitA hamster
+				case 78:
+	    			iv.setClickable(true);
+	    			iv.setOnClickListener(new OnClickListener(){
+	    		        @Override
+	    		        public void onClick(View v) {
+							int rand = getRand(5);
+							
+							if (rand <= 2) {
+								loadScene("sitA2B");
+							} else if (rand <= 4) {
+								loadScene("sitC");
+							} else {
+								loadScene("go");
+							}
+	    		        }
+	    			});
+					break;
+				case 90: // SitB hamster
+				case 91:
+	    			iv.setClickable(true);
+	    			iv.setOnClickListener(new OnClickListener(){
+	    		        @Override
+	    		        public void onClick(View v) {
+							if (getRandMatch(5)) {
+								loadScene("sitB2A");
+							} else {
+								int rand = getRand(4);
+								loadScene( (rand == 4) ? "lunch" : "lunch"+getRand(3) );
+							}
+	    		        }
+	    			});
+					break;
+				case 116: // SitC hamster
+				case 117:
+	    			iv.setClickable(true);
+	    			iv.setOnClickListener(new OnClickListener(){
+	    		        @Override
+	    		        public void onClick(View v) {
+							if (getRandMatch(5)) {
+								loadScene("sleepA");
+							} else {
+								loadScene("go");
+							}
+	    		        }
+	    			});
+					break;
 				case 118: // Sleeping hamster
 	    			iv.setClickable(true);
 	    			iv.setOnClickListener(new OnClickListener(){
@@ -500,7 +614,8 @@ public class MainActivity extends Activity {
 			case 220: // sitB
 				switch (getRand(15)) {
 					case 5:
-						loadScene("lunch"+getRand(3));
+						int rand = getRand(4);
+						loadScene( (rand == 4) ? "lunch" : "lunch"+getRand(3) );
 						break;
 					case 10:
 						loadScene("sB2A");
