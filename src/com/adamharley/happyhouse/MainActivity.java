@@ -36,7 +36,7 @@ public class MainActivity extends Activity {
 	private RelativeLayout stage;
 	private MediaPlayer mediaPlayer;
 	private Handler ticker = new Handler();
-	private static int msecsPerFrame = 200;
+	private static int framesPerSecond = 5;
 	private Runnable tick = new Runnable() {
 
 		@Override
@@ -48,10 +48,15 @@ public class MainActivity extends Activity {
 			}
 			
 			currentFrame += 1;
-			loadImageFrame(currentFrame);
-			loadSoundFrame(currentFrame);
+
+    		checkFPS(currentFrame);
 			
-			ticker.postDelayed(this, msecsPerFrame);
+	    	if (!checkEvent(currentFrame - 1)) {
+	    		loadImageFrame(currentFrame);
+	    		loadSoundFrame(currentFrame);
+	    	}
+			
+			ticker.postDelayed(this, 1000 / framesPerSecond);
 		}
 		
 	};
@@ -121,7 +126,7 @@ public class MainActivity extends Activity {
     public void onResume() {
     	super.onResume();
     	
-		ticker.postDelayed(tick, msecsPerFrame);
+		ticker.postDelayed(tick, 1000 / framesPerSecond);
     }
     
     
@@ -229,7 +234,7 @@ public class MainActivity extends Activity {
 	    			
 	    			int duration = frame.getInt(1) - n;
 	    			
-	    			ticker.postDelayed(soundTimeout, duration * msecsPerFrame);
+	    			ticker.postDelayed(soundTimeout, duration * 1000 / framesPerSecond);
 	    			Log.i(TAG,"Frame "+n+": Looping sound for "+duration+" frames");
 	    		}
 	    		
@@ -248,11 +253,6 @@ public class MainActivity extends Activity {
     
     
     private void loadImageFrame(int n) {
-    	if ( checkEvent(n-1) ) {
-    		return;
-    	}
-    	
-    	
     	// Hide all channels
     	for (int i = 1; i < 30; i++ ) {
     		ImageView iv = (ImageView) stage.findViewWithTag("channel"+i);
@@ -531,7 +531,8 @@ public class MainActivity extends Activity {
     			Toast.makeText(this, n, Toast.LENGTH_SHORT).show();
     		}
 
-			ticker.postDelayed(tick, msecsPerFrame);
+    		checkFPS(currentFrame);
+			ticker.postDelayed(tick, 1000 / framesPerSecond);
 			loadImageFrame(currentFrame);
 			loadSoundFrame(currentFrame);
 	
@@ -755,6 +756,25 @@ public class MainActivity extends Activity {
 		}
 		
 		return true;
+    }
+    
+    private void checkFPS(int n) {
+    	switch (n) {
+			case 25: // open sequence
+			case 54:
+			case 83:
+				framesPerSecond = 30;
+				break;
+			case 1056: // run sequence
+				framesPerSecond = 15;
+				break;
+			case 44: // sequence end
+			case 73:
+			case 102:
+			case 1068:
+				framesPerSecond = 5;
+				break;
+    	}
     }
     
 }
