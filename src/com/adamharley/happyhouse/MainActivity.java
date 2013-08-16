@@ -444,7 +444,7 @@ public class MainActivity extends Activity {
 							int rand = getRand(5);
 							
 							if (rand <= 2) {
-								loadScene("sitA2B");
+								loadScene("sA2B");
 							} else if (rand <= 4) {
 								loadScene("sitC");
 							} else {
@@ -460,7 +460,7 @@ public class MainActivity extends Activity {
 	    		        @Override
 	    		        public void onClick(View v) {
 							if (getRandMatch(5)) {
-								loadScene("sitB2A");
+								loadScene("sB2A");
 							} else {
 								int rand = getRand(4);
 								loadScene( (rand == 4) ? "lunch" : "lunch"+getRand(3) );
