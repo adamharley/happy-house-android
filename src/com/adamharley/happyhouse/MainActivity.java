@@ -19,6 +19,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
+import android.view.HapticFeedbackConstants;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -305,6 +306,8 @@ public class MainActivity extends Activity {
 	    			iv.setOnClickListener(new OnClickListener(){
 	    		        @Override
 	    		        public void onClick(View v) {
+    		        		v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+    		        		
 	    		        	loadScene("end1A");
 	    		        }
 	    			});
@@ -326,6 +329,8 @@ public class MainActivity extends Activity {
 	    			iv.setOnClickListener(new OnClickListener(){
 	    		        @Override
 	    		        public void onClick(View v) {
+    		        		v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+    		        		
 	    		        	loadScene("end1B");
 	    		        }
 	    			});
@@ -342,6 +347,8 @@ public class MainActivity extends Activity {
 	    			iv.setOnClickListener(new OnClickListener(){
 	    		        @Override
 	    		        public void onClick(View v) {
+    		        		v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+    		        		
 	    		        	loadScene("hello1");
 	    		        }
 	    			});
@@ -351,6 +358,8 @@ public class MainActivity extends Activity {
 	    			iv.setOnClickListener(new OnClickListener(){
 	    		        @Override
 	    		        public void onClick(View v) {
+    		        		v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+    		        		
 	    		        	loadScene("s"+getRand(3));
 	    		        }
 	    			});
@@ -373,16 +382,19 @@ public class MainActivity extends Activity {
     		        					&& currentFrame < data.getJSONObject("scenes").getInt("akubi")
 	    		        			)
 	    		        		) {
+    	    		        		v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
 	    		        			loadScene("food1");
     	    		        	} else if (
 	    		        			currentFrame >= data.getJSONObject("scenes").getInt("sitB")
 	    		        			&& currentFrame < data.getJSONObject("scenes").getInt("sitC")
     		        			) {
+    	    		        		v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
     	    		        		loadScene("food2");
     	    		        	} else if (
 	    		        			currentFrame >= data.getJSONObject("scenes").getInt("sitC")
 	    		        			&& currentFrame < data.getJSONObject("scenes").getInt("walkA")
     	    		        	) {
+    	    		        		v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
     	    		        		loadScene("food3");
     	    		        	}
 	    		        	} catch (JSONException e) {
@@ -410,6 +422,8 @@ public class MainActivity extends Activity {
 	    		        	}
 	    		        	
 	    		        	ticker.postDelayed(tick, 200 * (sequence.length + 1));
+	    		        	
+    		        		v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
 	    		        }
 	    			});
 					break;
@@ -432,6 +446,8 @@ public class MainActivity extends Activity {
 	    		        	}
 	    		        	
 	    		        	ticker.postDelayed(tick, 200 * (sequence.length + 1));
+	    		        	
+    		        		v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
 	    		        }
 	    			});
 					break;
@@ -441,6 +457,8 @@ public class MainActivity extends Activity {
 	    			iv.setOnClickListener(new OnClickListener(){
 	    		        @Override
 	    		        public void onClick(View v) {
+    		        		v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+    		        		
 							int rand = getRand(5);
 							
 							if (rand <= 2) {
@@ -459,6 +477,8 @@ public class MainActivity extends Activity {
 	    			iv.setOnClickListener(new OnClickListener(){
 	    		        @Override
 	    		        public void onClick(View v) {
+    		        		v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+    		        		
 							if (getRandMatch(5)) {
 								loadScene("sB2A");
 							} else {
@@ -474,6 +494,8 @@ public class MainActivity extends Activity {
 	    			iv.setOnClickListener(new OnClickListener(){
 	    		        @Override
 	    		        public void onClick(View v) {
+    		        		v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+    		        		
 							if (getRandMatch(5)) {
 								loadScene("sleepA");
 							} else {
@@ -487,6 +509,8 @@ public class MainActivity extends Activity {
 	    			iv.setOnClickListener(new OnClickListener(){
 	    		        @Override
 	    		        public void onClick(View v) {
+    		        		v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+    		        		
 							if (getRandMatch(15)) {
 								loadScene("gloomA");
 							} else {
