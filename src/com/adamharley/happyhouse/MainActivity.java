@@ -9,7 +9,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -99,8 +98,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         stage = (RelativeLayout) findViewById(R.id.stage);
-        
-        setVolumeControlStream(AudioManager.STREAM_MUSIC);
         
         if( loadData() ) {
         	loadScene("start0");
