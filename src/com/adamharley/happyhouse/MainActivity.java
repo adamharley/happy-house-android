@@ -34,6 +34,7 @@ public class MainActivity extends Activity {
 	private static final String TAG = "HappyHouse";
 	private JSONObject data;
 	private Integer currentFrame;
+	private RelativeLayout stage;
 	private MediaPlayer mediaPlayer;
 	private Handler ticker = new Handler();
 	private static int msecsPerFrame = 200;
@@ -74,6 +75,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        stage = (RelativeLayout) findViewById(R.id.stage);
         
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         
@@ -230,7 +232,6 @@ public class MainActivity extends Activity {
     		return;
     	}
     	
-    	final RelativeLayout stage = (RelativeLayout) findViewById(R.id.stage);
     	
     	// Hide all channels
     	for (int i = 1; i < 30; i++ ) {
@@ -247,147 +248,9 @@ public class MainActivity extends Activity {
             while( channels.hasNext() ){
                 String channel = (String)channels.next();
             	JSONArray sprite = (JSONArray) frame.get(channel);
-            	String imageName = sprite.getString(0);
-    			Integer imageResID = getResources().getIdentifier("member_"+imageName, "drawable", getPackageName());
-    			
-    			ImageView iv = (ImageView) stage.findViewWithTag("channel"+channel);
-				iv.setImageResource(android.R.color.transparent);
-    			iv.setClickable(false);
-    			
-            	if( imageResID.equals(0) ) {
-            		switch (Integer.parseInt(imageName)) { // Convert to integer to work around for being below JRE 1.7
-	    				case 288: // Quit button
-	    					int width = 52 * 2;
-	    					int height = 22 * 2;
-	    					
-	    					RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height);
-	    	    			params.leftMargin = sprite.getInt(1) * 2;
-	    	    			params.topMargin = sprite.getInt(2) * 2;
-	    	    			
-	    	    			iv.setLayoutParams(params);
-	    	    			iv.setVisibility(View.VISIBLE);
-	    	    			
-	    	    			iv.setClickable(true);
-	    	    			iv.setOnClickListener(new OnClickListener(){
-	    	    		        @Override
-	    	    		        public void onClick(View v) {
-	    	    		        	loadScene("end1A");
-	    	    		        }
-	    	    			});
-    	    				break;
-	    				case 289: // Basket button? (found in start0, end1 and hello2)
-	    					break;
-	    				case 290: // Open button
-	    					width = 52 * 2;
-	    					height = 22 * 2;
-	    					
-	    					params = new RelativeLayout.LayoutParams(width, height);
-	    	    			params.leftMargin = sprite.getInt(1) * 2;
-	    	    			params.topMargin = sprite.getInt(2) * 2;
-	    	    			
-	    	    			iv.setLayoutParams(params);
-	    	    			iv.setVisibility(View.VISIBLE);
-	    	    			
-	    	    			iv.setClickable(true);
-	    	    			iv.setOnClickListener(new OnClickListener(){
-	    	    		        @Override
-	    	    		        public void onClick(View v) {
-	    	    		        	loadScene("end1B");
-	    	    		        }
-	    	    			});
-    	    				break;
-	    				case 291: // Black background
-	    					break;
-	    				default:
-	    					Log.i(TAG,"Frame "+n+": Could not find cast member "+imageName);
-	    			}
-            	} else {
-	    			switch (Integer.parseInt(imageName)) { // Convert to integer to work around for being below JRE 1.7
-	    				case 12: // Basket top
-	    	    			iv.setClickable(true);
-	    	    			iv.setOnClickListener(new OnClickListener(){
-	    	    		        @Override
-	    	    		        public void onClick(View v) {
-	    	    		        	loadScene("hello1");
-	    	    		        }
-	    	    			});
-    	    				break;
-	    				case 14: // Basket full
-	    	    			iv.setClickable(true);
-	    	    			iv.setOnClickListener(new OnClickListener(){
-	    	    		        @Override
-	    	    		        public void onClick(View v) {
-	    	    		        	loadScene("s"+getRand(3));
-	    	    		        }
-	    	    			});
-    	    				break;
-	    				case 18: // Bowl
-	    				case 19:
-	    	    			iv.setClickable(true);
-	    	    			iv.setOnClickListener(new OnClickListener(){
-	    	    		        @Override
-	    	    		        public void onClick(View v) {
-	    	    		        	try {
-		    	    		        	if (
-		    	    		        		(
-    	    		        					currentFrame >= data.getJSONObject("scenes").getInt("sitA")
-    	    		        					&& currentFrame < data.getJSONObject("scenes").getInt("sB2A")
-	    	    		        			)
-	    	    		        			||
-	    	    		        			(
-    	    		        					currentFrame >= data.getJSONObject("scenes").getInt("sleepA")
-    	    		        					&& currentFrame < data.getJSONObject("scenes").getInt("akubi")
-	    	    		        			)
-	    	    		        		) {
-	    	    		        			loadScene("food1");
-		    	    		        	} else if (
-	    	    		        			currentFrame >= data.getJSONObject("scenes").getInt("sitB")
-	    	    		        			&& currentFrame < data.getJSONObject("scenes").getInt("sitC")
-		    		        			) {
-		    	    		        		loadScene("food2");
-		    	    		        	} else if (
-	    	    		        			currentFrame >= data.getJSONObject("scenes").getInt("sitC")
-	    	    		        			&& currentFrame < data.getJSONObject("scenes").getInt("walkA")
-		    	    		        	) {
-		    	    		        		loadScene("food3");
-		    	    		        	}
-	    	    		        	} catch (JSONException e) {
-	    	    		    			Log.e(TAG,"JSONException: "+e.getMessage());
-	    	    		        	}
-    	    					}
-	    	    			});
-    	    				break;
-	    				case 118: // Sleeping hamster
-	    	    			iv.setClickable(true);
-	    	    			iv.setOnClickListener(new OnClickListener(){
-	    	    		        @Override
-	    	    		        public void onClick(View v) {
-	    							if (getRandMatch(15)) {
-	    								loadScene("gloomA");
-	    							} else {
-	    								loadScene("akubi");
-	    							}
-	    	    		        }
-	    	    			});
-    	    				break;
-	    			}
-	    			
-	    			Bitmap bm = BitmapFactory.decodeResource(getResources(), imageResID);
-	    			BitmapDrawable bd = new BitmapDrawable(getResources(), bm);
-	    			bd.setFilterBitmap(false);
-	    			int width = bd.getIntrinsicWidth();
-	    			int height = bd.getIntrinsicHeight();
-	    			
-	    			iv.setImageDrawable(bd);
-	    			
-	    			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height);
-	    			params.leftMargin = sprite.getInt(1) * 2;
-	    			params.topMargin = sprite.getInt(2) * 2;
-	    			
-	    			iv.setLayoutParams(params);
-	    			iv.setVisibility(View.VISIBLE);
-				}
-            }
+            	
+            	loadImage(n, channel, sprite);
+			}
     		
 //    		Log.i(TAG,"Frame "+n+": Loaded");
     	} catch (JSONException e) {
@@ -396,6 +259,151 @@ public class MainActivity extends Activity {
     }
     
     
+	private void loadImage(int n, String channel, JSONArray sprite) throws JSONException {
+    	
+    	String imageName = sprite.getString(0);
+		Integer imageResID = getResources().getIdentifier("member_"+imageName, "drawable", getPackageName());
+		
+		ImageView iv = (ImageView) stage.findViewWithTag("channel"+channel);
+		iv.setImageResource(android.R.color.transparent);
+		iv.setClickable(false);
+		
+    	if( imageResID.equals(0) ) {
+    		switch (Integer.parseInt(imageName)) { // Convert to integer to work around for being below JRE 1.7
+				case 288: // Quit button
+					int width = 52 * 2;
+					int height = 22 * 2;
+					
+					RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height);
+	    			params.leftMargin = sprite.getInt(1) * 2;
+	    			params.topMargin = sprite.getInt(2) * 2;
+	    			
+	    			iv.setLayoutParams(params);
+	    			iv.setVisibility(View.VISIBLE);
+	    			
+	    			iv.setClickable(true);
+	    			iv.setOnClickListener(new OnClickListener(){
+	    		        @Override
+	    		        public void onClick(View v) {
+	    		        	loadScene("end1A");
+	    		        }
+	    			});
+    				break;
+				case 289: // Basket button? (found in start0, end1 and hello2)
+					break;
+				case 290: // Open button
+					width = 52 * 2;
+					height = 22 * 2;
+					
+					params = new RelativeLayout.LayoutParams(width, height);
+	    			params.leftMargin = sprite.getInt(1) * 2;
+	    			params.topMargin = sprite.getInt(2) * 2;
+	    			
+	    			iv.setLayoutParams(params);
+	    			iv.setVisibility(View.VISIBLE);
+	    			
+	    			iv.setClickable(true);
+	    			iv.setOnClickListener(new OnClickListener(){
+	    		        @Override
+	    		        public void onClick(View v) {
+	    		        	loadScene("end1B");
+	    		        }
+	    			});
+    				break;
+				case 291: // Black background
+					break;
+				default:
+					Log.i(TAG,"Frame "+n+": Could not find cast member "+imageName);
+			}
+    	} else {
+			switch (Integer.parseInt(imageName)) { // Convert to integer to work around for being below JRE 1.7
+				case 12: // Basket top
+	    			iv.setClickable(true);
+	    			iv.setOnClickListener(new OnClickListener(){
+	    		        @Override
+	    		        public void onClick(View v) {
+	    		        	loadScene("hello1");
+	    		        }
+	    			});
+    				break;
+				case 14: // Basket full
+	    			iv.setClickable(true);
+	    			iv.setOnClickListener(new OnClickListener(){
+	    		        @Override
+	    		        public void onClick(View v) {
+	    		        	loadScene("s"+getRand(3));
+	    		        }
+	    			});
+    				break;
+				case 18: // Bowl
+				case 19:
+	    			iv.setClickable(true);
+	    			iv.setOnClickListener(new OnClickListener(){
+	    		        @Override
+	    		        public void onClick(View v) {
+	    		        	try {
+    	    		        	if (
+    	    		        		(
+    		        					currentFrame >= data.getJSONObject("scenes").getInt("sitA")
+    		        					&& currentFrame < data.getJSONObject("scenes").getInt("sB2A")
+	    		        			)
+	    		        			||
+	    		        			(
+    		        					currentFrame >= data.getJSONObject("scenes").getInt("sleepA")
+    		        					&& currentFrame < data.getJSONObject("scenes").getInt("akubi")
+	    		        			)
+	    		        		) {
+	    		        			loadScene("food1");
+    	    		        	} else if (
+	    		        			currentFrame >= data.getJSONObject("scenes").getInt("sitB")
+	    		        			&& currentFrame < data.getJSONObject("scenes").getInt("sitC")
+    		        			) {
+    	    		        		loadScene("food2");
+    	    		        	} else if (
+	    		        			currentFrame >= data.getJSONObject("scenes").getInt("sitC")
+	    		        			&& currentFrame < data.getJSONObject("scenes").getInt("walkA")
+    	    		        	) {
+    	    		        		loadScene("food3");
+    	    		        	}
+	    		        	} catch (JSONException e) {
+	    		    			Log.e(TAG,"JSONException: "+e.getMessage());
+	    		        	}
+    					}
+	    			});
+    				break;
+				case 118: // Sleeping hamster
+	    			iv.setClickable(true);
+	    			iv.setOnClickListener(new OnClickListener(){
+	    		        @Override
+	    		        public void onClick(View v) {
+							if (getRandMatch(15)) {
+								loadScene("gloomA");
+							} else {
+								loadScene("akubi");
+							}
+	    		        }
+	    			});
+    				break;
+			}
+			
+			Bitmap bm = BitmapFactory.decodeResource(getResources(), imageResID);
+			BitmapDrawable bd = new BitmapDrawable(getResources(), bm);
+			bd.setFilterBitmap(false);
+			int width = bd.getIntrinsicWidth();
+			int height = bd.getIntrinsicHeight();
+			
+			iv.setImageDrawable(bd);
+			
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height);
+			params.leftMargin = sprite.getInt(1) * 2;
+			params.topMargin = sprite.getInt(2) * 2;
+			
+			iv.setLayoutParams(params);
+			iv.setVisibility(View.VISIBLE);
+        }
+	}
+	
+
     private void loadScene(String n) {
     	ticker.removeCallbacks(tick);
     	ticker.removeCallbacks(soundTimeout);
