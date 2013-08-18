@@ -18,7 +18,9 @@ import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.HapticFeedbackConstants;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,7 +50,7 @@ public class MainActivity extends Activity {
 				currentFrame = 0;
 			}
 			
-			currentFrame += 1;
+			currentFrame++;
 
     		checkFPS(currentFrame);
 			
@@ -178,6 +180,12 @@ public class MainActivity extends Activity {
     }
     
     
+    private int convertDpToPixels(int dp) {
+    	final DisplayMetrics dm = getResources().getDisplayMetrics();
+    	return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, dm);
+    }
+    
+    
     private boolean loadData() {
     	try
     	{
@@ -292,12 +300,12 @@ public class MainActivity extends Activity {
     	if( imageResID.equals(0) ) {
     		switch (Integer.parseInt(imageName)) { // Convert to integer to work around for being below JRE 1.7
 				case 288: // Quit button
-					int width = 52 * 2;
-					int height = 22 * 2;
+					int width = convertDpToPixels(52);
+					int height = convertDpToPixels(22);
 					
 					RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height);
-	    			params.leftMargin = sprite.getInt(1) * 2;
-	    			params.topMargin = sprite.getInt(2) * 2;
+	    			params.leftMargin = convertDpToPixels(sprite.getInt(1));
+	    			params.topMargin = convertDpToPixels(sprite.getInt(2));
 	    			
 	    			iv.setLayoutParams(params);
 	    			iv.setVisibility(View.VISIBLE);
@@ -315,12 +323,12 @@ public class MainActivity extends Activity {
 				case 289: // Basket button? (found in start0, end1 and hello2)
 					break;
 				case 290: // Open button
-					width = 52 * 2;
-					height = 22 * 2;
+					width = convertDpToPixels(52);
+					height = convertDpToPixels(22);
 					
 					params = new RelativeLayout.LayoutParams(width, height);
-	    			params.leftMargin = sprite.getInt(1) * 2;
-	    			params.topMargin = sprite.getInt(2) * 2;
+	    			params.leftMargin = convertDpToPixels(sprite.getInt(1));
+	    			params.topMargin = convertDpToPixels(sprite.getInt(2));
 	    			
 	    			iv.setLayoutParams(params);
 	    			iv.setVisibility(View.VISIBLE);
@@ -530,8 +538,10 @@ public class MainActivity extends Activity {
 			iv.setImageDrawable(bd);
 			
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height);
-			params.leftMargin = sprite.getInt(1) * 2;
-			params.topMargin = sprite.getInt(2) * 2;
+			
+			
+			params.leftMargin = convertDpToPixels(sprite.getInt(1));
+			params.topMargin = convertDpToPixels(sprite.getInt(2));
 			
 			iv.setLayoutParams(params);
 			iv.setVisibility(View.VISIBLE);
@@ -782,6 +792,7 @@ public class MainActivity extends Activity {
 		return true;
     }
     
+	
     private void checkFPS(int n) {
     	switch (n) {
 			case 25: // open sequence
