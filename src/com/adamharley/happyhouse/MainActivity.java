@@ -675,12 +675,12 @@ public class MainActivity extends Activity {
 				}
 				break;
 			case 245: // walkA
-				if (getRandMatch(15)) {
+				if (getRandMatch(5)) {
 					loadScene("gloomB");
 				}
 				break;
 			case 311: // w-4
-				if (getRandMatch(15)) {
+				if (getRandMatch(2)) {
 					loadScene("return");
 				}
 				break;
