@@ -12,8 +12,10 @@ import org.json.JSONObject;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -31,7 +33,6 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
-	
 	private static boolean debug = false;
 	private static final String TAG = "HappyHouse";
 	private JSONObject data;
@@ -40,6 +41,7 @@ public class MainActivity extends Activity {
 	private MediaPlayer mediaPlayer;
 	private Handler ticker = new Handler();
 	private static int framesPerSecond = 5;
+	
 	private Runnable tick = new Runnable() {
 
 		@Override
@@ -63,6 +65,7 @@ public class MainActivity extends Activity {
 		}
 		
 	};
+	
 	private Runnable soundTimeout = new Runnable() {
 		
 		@Override
@@ -76,6 +79,7 @@ public class MainActivity extends Activity {
 		}
 		
 	};
+	
 	private class TurnAnimRunnable implements Runnable {
 		private int n;
 		private String channel;
@@ -163,6 +167,10 @@ public class MainActivity extends Activity {
                 Intent intent = new Intent(this, AboutActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.action_settings:
+                intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -227,6 +235,10 @@ public class MainActivity extends Activity {
 	    		} else {
 		    	    mediaPlayer = new MediaPlayer();
 	    		}
+	            
+	            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+	            float volumePref = sharedPref.getFloat("pref_key_volume", (float) R.string.default_volume);
+	            mediaPlayer.setVolume(volumePref, volumePref);
 	    		
 	    	    mediaPlayer.setDataSource(descriptor.getFileDescriptor(), start, end);
 	    	    descriptor.close();

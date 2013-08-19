@@ -1,0 +1,7 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" android:title="@string/settings_name">
+    <net.jayschwa.android.preference.SliderPreference
+		android:key="pref_key_volume"
+		android:title="@string/settings_volume"
+		android:defaultValue="@string/default_volume" />
+
+</PreferenceScreen>

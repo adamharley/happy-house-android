@@ -31,6 +31,11 @@
           	android:label="@string/about_name"
           	android:configChanges="keyboardHidden" >
         </activity>
+        <activity
+            android:name="com.adamharley.happyhouse.SettingsActivity"
+          	android:label="@string/settings_name"
+          	android:configChanges="keyboardHidden" >
+        </activity>
     </application>
 
 </manifest>

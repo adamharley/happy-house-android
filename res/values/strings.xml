@@ -11,5 +11,8 @@
     <string name="about_farewell">Good night &amp; Sweet dreams, Ruby. I love you always.</string>
     <string name="about_android">Android version</string>
     <string name="about_adam">was developed by Adam Harley\nusing Swifty Xena Pro, dirOpener, ImgXtra, AudioXtra and Adobe Director</string>
+    <string name="settings_name">Settings</string>
+    <string name="settings_volume">Volume</string>
+    <string name="default_volume">1.0</string>
 
 </resources>
