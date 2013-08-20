@@ -27,7 +27,6 @@
             android:id="@+id/about_angel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:filter="false"
             android:src="@drawable/member_293" />
 
         <TextView
@@ -50,10 +49,8 @@
             android:id="@+id/about_star"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:filter="false"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
-            android:fontFamily="serif"
             android:src="@drawable/member_302" />
 
         <TextView
