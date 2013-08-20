@@ -4,7 +4,7 @@
         android:layout_height="155dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:background="@android:color/background_dark" >
+        android:background="@android:color/black" >
 
         <!-- Channels 14 and 23 through 26 are unused -->
         
