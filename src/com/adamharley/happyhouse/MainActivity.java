@@ -17,12 +17,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.HapticFeedbackConstants;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,6 +40,9 @@ public class MainActivity extends Activity {
 	private MediaPlayer mediaPlayer;
 	private Handler ticker = new Handler();
 	private static int framesPerSecond = 5;
+	private double scale = 2;
+	private static int stage_width = 272;
+	private static int stage_height = 155;
 	
 	private Runnable tick = new Runnable() {
 
@@ -111,6 +113,8 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         stage = (RelativeLayout) findViewById(R.id.stage);
         
+        onConfigurationChanged(getResources().getConfiguration());
+        
         if( loadData() ) {
         	loadScene("start0");
         }
@@ -151,6 +155,22 @@ public class MainActivity extends Activity {
     }
     
     
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            scale = 4;
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            scale = 2.3;
+        }
+        
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(scaleDimension(stage_width), scaleDimension(stage_height)); // TODO Replace with R.dimen.stage_width/height
+		params.addRule(RelativeLayout.CENTER_IN_PARENT);
+		stage.setLayoutParams(params);
+    }
+    
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -188,9 +208,8 @@ public class MainActivity extends Activity {
     }
     
     
-    private int convertDpToPixels(int dp) {
-    	final DisplayMetrics dm = getResources().getDisplayMetrics();
-    	return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, dm);
+    private int scaleDimension(int v) {
+    	return (int) (v * scale);
     }
     
     
@@ -312,12 +331,12 @@ public class MainActivity extends Activity {
     	if( imageResID.equals(0) ) {
     		switch (Integer.parseInt(imageName)) { // Convert to integer to work around for being below JRE 1.7
 				case 288: // Quit button
-					int width = convertDpToPixels(52);
-					int height = convertDpToPixels(22);
+					int width = scaleDimension(52);
+					int height = scaleDimension(22);
 					
 					RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height);
-	    			params.leftMargin = convertDpToPixels(sprite.getInt(1));
-	    			params.topMargin = convertDpToPixels(sprite.getInt(2));
+	    			params.leftMargin = scaleDimension(sprite.getInt(1));
+	    			params.topMargin = scaleDimension(sprite.getInt(2));
 	    			
 	    			iv.setLayoutParams(params);
 	    			iv.setVisibility(View.VISIBLE);
@@ -335,12 +354,12 @@ public class MainActivity extends Activity {
 				case 289: // Basket button? (found in start0, end1 and hello2)
 					break;
 				case 290: // Open button
-					width = convertDpToPixels(52);
-					height = convertDpToPixels(22);
+					width = scaleDimension(52);
+					height = scaleDimension(22);
 					
 					params = new RelativeLayout.LayoutParams(width, height);
-	    			params.leftMargin = convertDpToPixels(sprite.getInt(1));
-	    			params.topMargin = convertDpToPixels(sprite.getInt(2));
+	    			params.leftMargin = scaleDimension(sprite.getInt(1));
+	    			params.topMargin = scaleDimension(sprite.getInt(2));
 	    			
 	    			iv.setLayoutParams(params);
 	    			iv.setVisibility(View.VISIBLE);
@@ -541,19 +560,23 @@ public class MainActivity extends Activity {
     				break;
 			}
 			
+
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+            boolean filterPref = sharedPref.getBoolean("pref_key_filter", true); // TODO Replace with @bool/default_filter
+			
 			Bitmap bm = BitmapFactory.decodeResource(getResources(), imageResID);
 			BitmapDrawable bd = new BitmapDrawable(getResources(), bm);
-			bd.setFilterBitmap(false);
-			int width = bd.getIntrinsicWidth();
-			int height = bd.getIntrinsicHeight();
+			bd.setFilterBitmap(filterPref);
+			int width = scaleDimension(bd.getIntrinsicWidth());
+			int height = scaleDimension(bd.getIntrinsicHeight());
 			
 			iv.setImageDrawable(bd);
 			
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height);
 			
 			
-			params.leftMargin = convertDpToPixels(sprite.getInt(1));
-			params.topMargin = convertDpToPixels(sprite.getInt(2));
+			params.leftMargin = scaleDimension(sprite.getInt(1));
+			params.topMargin = scaleDimension(sprite.getInt(2));
 			
 			iv.setLayoutParams(params);
 			iv.setVisibility(View.VISIBLE);
