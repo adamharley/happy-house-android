@@ -2,7 +2,7 @@
     <net.jayschwa.android.preference.SliderPreference
 		android:key="pref_key_volume"
 		android:title="@string/settings_volume"
-		android:defaultValue="@float/default_volume" />
+		android:defaultValue="@string/default_volume" />
     <CheckBoxPreference android:key="pref_key_filter" android:title="@string/settings_filter" android:summaryOff="@string/settings_filter_off" android:summaryOn="@string/settings_filter_on" android:defaultValue="@bool/default_filter" />
 
 </PreferenceScreen>

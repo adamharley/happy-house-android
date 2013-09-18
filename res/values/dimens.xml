@@ -6,7 +6,7 @@
     
     <dimen name="widget_margin">8dp</dimen>
     
-    <dimen name="stage_width">272x</dimen>
+    <dimen name="stage_width">272px</dimen>
     <dimen name="stage_height">155px</dimen>
 
 </resources>

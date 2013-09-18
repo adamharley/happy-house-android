@@ -13,7 +13,7 @@
     <string name="about_adam">was developed by Adam Harley\nusing Swifty Xena Pro, dirOpener, ImgXtra, AudioXtra and Adobe Director</string>
     <string name="settings_name">Settings</string>
     <string name="settings_volume">Volume</string>
-    <item format="float" name="default_volume" type="float">1.0</item>
+    <item format="float" name="default_volume" type="string">1.0</item>
     <string name="settings_filter">Pixel art smoothing</string>
     <string name="settings_filter_on">Enabled</string>
     <string name="settings_filter_off">Disabled</string>
